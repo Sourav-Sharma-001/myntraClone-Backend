@@ -42,7 +42,7 @@ const viewData = await mongoose.connection.db
   return res.send(viewData);
 });
 
-const PORT = process.env.PORT || 4001;
-app.listen(PORT, (req, res) => {
-  console.log(`Your server is on http://localhost:${PORT}/`);
+const port = process.env.PORT || 4001;
+app.listen(port, (req, res) => {
+  console.log(`Your server is on http://localhost:${port}/`);
 });
