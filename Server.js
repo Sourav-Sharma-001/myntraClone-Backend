@@ -6,6 +6,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs"); // Ensure bcrypt is imported
 const verifyTokenMiddleware = require('./middleware') // This is your JWT verification middleware
+const User = require('./userModel');
 
 // Database connection
 mongoose.connect('mongodb+srv://BAHURJA:1234567889@cluster0.hhwof.mongodb.net/localApp');
@@ -38,7 +39,7 @@ app.post('/login', async (req, res) => {
 
 // Protected route: Home Data
 app.get('/home', verifyTokenMiddleware, async (req, res) => {
-  const homeData = await mongoose.connection.db.collection('home').find({}).toArray();
+  const homeData = await mongoose.connection.db.collection('home').find({ _id, name, title, price, thumbnail, discount}).toArray();
   return res.send(homeData);
 });
 
@@ -49,7 +50,7 @@ app.get('/view', verifyTokenMiddleware, async (req, res) => {
 });
 
 // Protected route: Get Product Details
-app.get('/getProductDetails', verifyTokenMiddleware, async (req, res) => {
+app.get('/view', verifyTokenMiddleware, async (req, res) => {
   const viewData = await mongoose.connection.db
     .collection('view')
     .find({ _id: new ObjectId(req.query.id) })
