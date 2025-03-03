@@ -17,13 +17,13 @@ app.use(cors());
 app.use('/auth', authRouter);
 
 app.get('/home', async (req, res) => {
-  const homeData = await mongoose.connection.db.collection('home').find({ _id, name, title, price, thumbnail, discount}).toArray();
+  const homeData = await mongoose.connection.db.collection('home').find({}).toArray();
   return res.send(homeData);
 });
 
 
-app.get('/view', ensureAuthenticated, async (req, res) => {
-  const viewData = await mongoose.connection.db.collection('view').find({ name, title, price, thumbnail, discount}).toArray();
+app.get('/getProductsDetails', ensureAuthenticated, async (req, res) => {
+  const viewData = await mongoose.connection.db.collection('view').find({_id, image}).toArray();
   return res.send(viewData);
 });
 
@@ -31,7 +31,7 @@ app.get('/view', ensureAuthenticated, async (req, res) => {
 app.get('/view', ensureAuthenticated, async (req, res) => {
   const viewData = await mongoose.connection.db
     .collection('view')
-    .find({ _id: new ObjectId(req.query.id) })
+    .find({ _id: new ObjectId(req.query.id, name, title, price, thumbnail, discount) })
     .toArray();
   return res.send(viewData);
 });
