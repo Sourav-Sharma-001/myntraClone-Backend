@@ -2,8 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { ObjectId } = require('mongodb');
-const authRouter = require('./Routes/auth');
+const authRouter = require('./Routes/authRouter');
 const ensureAuthenticated = require('./middleware/auth');
+require('dotenv').config();
+
 
 
 
@@ -16,22 +18,22 @@ app.use(cors());
 
 app.use('/auth', authRouter);
 
-app.get('/home', async (req, res) => {
+app.get('/home', ensureAuthenticated, async (req, res) => {
   const homeData = await mongoose.connection.db.collection('home').find({}).toArray();
   return res.send(homeData);
 });
 
 
-app.get('/getProductsDetails', ensureAuthenticated, async (req, res) => {
-  const viewData = await mongoose.connection.db.collection('view').find({_id, image}).toArray();
+app.get('/view', ensureAuthenticated, async (req, res) => {
+  const viewData = await mongoose.connection.db.collection('view').find({}).toArray();
   return res.send(viewData);
 });
 
 
-app.get('/view', ensureAuthenticated, async (req, res) => {
+app.get('/getProductsDetails', ensureAuthenticated, async (req, res) => {
   const viewData = await mongoose.connection.db
     .collection('view')
-    .find({ _id: new ObjectId(req.query.id, name, title, price, thumbnail, discount) })
+    .find({ _id: new ObjectId(req.query.id)})
     .toArray();
   return res.send(viewData);
 });
