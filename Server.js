@@ -30,7 +30,7 @@ app.get('/view', ensureAuthenticated, async (req, res) => {
 });
 
 
-app.get('/getProductsDetails', ensureAuthenticated, async (req, res) => {
+app.get('/getProductsDetails', ensureAuthenticated, async (req, ers) => {
   const viewData = await mongoose.connection.db
     .collection('view')
     .find({ _id: new ObjectId(req.query.id)})
