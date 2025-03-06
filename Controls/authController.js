@@ -52,7 +52,7 @@ const login = async (req, res) => {
         res.status(200).json({ 
             message: 'Login successful', 
             success: true, 
-            jwtToken: `Bearer ${jwtToken}`,
+            jwtToken: jwtToken,
             email, 
             name: user.name 
         });
