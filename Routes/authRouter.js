@@ -3,10 +3,6 @@ const { signupValidation, loginValidation } = require('../middleware/authValidat
 
 const router = require('express').Router();
 
-// router.post('/login', function(req, res) {
-//     //res.send('login success');
-// });
-
 router.post('/login', loginValidation, login);
 router.post('/signup', signupValidation, signup);
 

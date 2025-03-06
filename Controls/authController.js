@@ -8,13 +8,11 @@ const signup = async (req, res) => {
     try {
         const { name, password, email } = req.body;
 
-        // Check if user already exists
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(409).json({ message: 'User already exists', success: false });
         }
 
-        // Hash password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new userModel({ name, password: hashedPassword, email });
         await newUser.save();
@@ -34,14 +32,12 @@ const login = async (req, res) => {
         if (!user) {
             return res.status(403).json({ message: 'Email or password is wrong', success: false });
         }
-
-        // Compare passwords
+        
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
             return res.status(403).json({ message: 'Email or password is wrong', success: false });
         }
 
-        // Generate JWT token
         if (!process.env.SECRET_KEY) {
             console.error('SECRET_KEY is not defined in environment variables');
             return res.status(500).json({ message: 'Internal server error', success: false });
